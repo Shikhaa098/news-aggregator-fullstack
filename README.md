@@ -43,5 +43,5 @@ This is a fullstack news aggregator application built as part of the Fullstack D
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/news-aggregator-case-study.git
-cd news-aggregator-case-study
+git clone https://github.com/Shikhaa098/news-aggregator-fullstack
+cd news-aggregator-fullstack

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
 import { toast } from 'react-toastify';
+import { FiUser, FiMail, FiLock } from 'react-icons/fi';
 
 const Register = () => {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -30,45 +31,64 @@ const Register = () => {
       const message = err.response?.data?.message || 'Registration failed';
       toast.error(message);
     }
-
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded p-6 w-full md:w-1/2 mx-auto mt-12">
-      <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
-      <input
-        name="name"
-        value={form.name}
-        onChange={handleChange}
-        placeholder="Name"
-        className="w-full mb-4 p-2 border rounded"
-        required
-      />
-      <input
-        name="email"
-        type="email"
-        value={form.email}
-        onChange={handleChange}
-        placeholder="Email"
-        className="w-full mb-4 p-2 border rounded"
-        required
-      />
-      <input
-        name="password"
-        type="password"
-        value={form.password}
-        onChange={handleChange}
-        placeholder="Password"
-        className="w-full mb-4 p-2 border rounded"
-        required
-      />
-      <button type="submit" className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
-        Register
-      </button>
-      <p className="text-center mt-4">
-        Already have an account? <Link to="/login" className="text-green-600">Login here</Link>
-      </p>
-    </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Create an Account</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="flex items-center border rounded px-3 py-2 mb-4">
+            <FiUser className="text-gray-500 mr-2" />
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={form.name}
+              onChange={handleChange}
+              className="w-full focus:outline-none"
+              required
+            />
+          </div>
+          <div className="flex items-center border rounded px-3 py-2 mb-4">
+            <FiMail className="text-gray-500 mr-2" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={handleChange}
+              className="w-full focus:outline-none"
+              required
+            />
+          </div>
+          <div className="flex items-center border rounded px-3 py-2 mb-6">
+            <FiLock className="text-gray-500 mr-2" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              className="w-full focus:outline-none"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded transition"
+          >
+            Register
+          </button>
+        </form>
+        <p className="text-center mt-4 text-sm text-gray-600">
+          Already have an account?{' '}
+          <Link to="/login" className="text-green-600 hover:underline font-medium">
+            Login here
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
 import { toast } from 'react-toastify';
+import { FiMail, FiLock } from 'react-icons/fi';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -31,31 +32,44 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded p-6 w-full md:w-1/2 mx-auto mt-12">
-      <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
-      <input
-        type="email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        placeholder="Email"
-        className="w-full mb-4 p-2 border rounded"
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        placeholder="Password"
-        className="w-full mb-4 p-2 border rounded"
-        required
-      />
-      <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
-        Login
-      </button>
-      <p className="text-center mt-4">
-        Don't have an account? <Link to="/register" className="text-blue-600">Register here</Link>
-      </p>
-    </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login to Your Account</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="flex items-center border rounded px-3 py-2 mb-4">
+            <FiMail className="text-gray-500 mr-2" />
+            <input
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="Email"
+              className="w-full focus:outline-none"
+              required
+            />
+          </div>
+          <div className="flex items-center border rounded px-3 py-2 mb-6">
+            <FiLock className="text-gray-500 mr-2" />
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full focus:outline-none"
+              required
+            />
+          </div>
+          <button type="submit" className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition">
+            Login
+          </button>
+        </form>
+        <p className="text-center mt-4 text-sm text-gray-600">
+          Don&apos;t have an account?{' '}
+          <Link to="/register" className="text-blue-600 hover:underline font-medium">
+            Register here
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 };
 

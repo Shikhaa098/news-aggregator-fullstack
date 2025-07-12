@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/axios';
+import {
+  FaNewspaper,
+  FaFolderOpen,
+  FaCalendarAlt,
+  FaExternalLinkAlt,
+} from 'react-icons/fa';
 
 interface Article {
   id: number;
@@ -23,7 +29,6 @@ const NewsFeed = () => {
   const [sources, setSources] = useState<string[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
 
-  // Fetch sources and categories for dropdown filters
   useEffect(() => {
     api.get('/filters')
       .then(res => {
@@ -33,7 +38,6 @@ const NewsFeed = () => {
       .catch(() => alert('Failed to load filters'));
   }, []);
 
-  // Fetch filtered articles from backend
   const fetchArticles = async () => {
     setLoading(true);
     try {
@@ -67,9 +71,12 @@ const NewsFeed = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-gray-800">📰 News Feed</h2>
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold flex items-center gap-2">
+          📰 News Feed
+        </h2>
         <button
           onClick={() => {
             localStorage.removeItem('token');
@@ -82,19 +89,19 @@ const NewsFeed = () => {
       </div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 bg-white p-4 rounded shadow">
         <input
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="Search..."
-          className="border p-2 rounded"
+          placeholder="Search keyword..."
+          className="border p-2 rounded w-full"
         />
 
         <select
           value={source}
           onChange={(e) => setSource(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full"
         >
           <option value="">All Sources</option>
           {sources.map((s, idx) => (
@@ -105,7 +112,7 @@ const NewsFeed = () => {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full"
         >
           <option value="">All Categories</option>
           {categories.map((c, idx) => (
@@ -129,39 +136,60 @@ const NewsFeed = () => {
         </div>
       </div>
 
-      <button
-        onClick={clearFilters}
-        className="mb-4 text-sm text-blue-600 hover:underline"
-      >
-        Reset Filters
-      </button>
+      <div className="mb-4 text-right">
+        <button
+          onClick={clearFilters}
+          className="text-sm text-blue-600 hover:underline"
+        >
+          Reset Filters
+        </button>
+      </div>
 
-      {/* News List */}
+      {/* News Cards */}
       {loading ? (
         <p>Loading...</p>
       ) : articles.length === 0 ? (
         <p className="text-gray-500">No articles found.</p>
       ) : (
-        articles.map(article => (
-          <div key={article.id} className="border rounded p-4 mb-4 shadow hover:shadow-md transition">
-            <h3 className="text-lg font-semibold text-blue-800">{article.title}</h3>
-            <p className="text-gray-700 mt-1">{article.description}</p>
-            <p className="text-sm text-gray-500 mt-1">
-              Source: {article.source} | Category: {article.category}
-            </p>
-            <p className="text-sm text-gray-500 mt-1">
-              Published on: {new Date(article.published_at).toLocaleDateString()}
-            </p>
-            <a
-              href={article.url}
-              target="_blank"
-              rel="noreferrer"
-              className="text-blue-600 hover:underline inline-block mt-2"
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {articles.map(article => (
+            <div
+              key={article.id}
+              className="border rounded-lg shadow hover:shadow-lg transition bg-white p-4 flex flex-col justify-between"
             >
-              Read more →
-            </a>
-          </div>
-        ))
+              <div>
+                <h3 className="text-md font-semibold text-blue-800 mb-2">
+                  {article.title}
+                </h3>
+                <p className="text-sm text-gray-600 line-clamp-3">
+                  {article.description}
+                </p>
+              </div>
+
+              <div className="mt-3 text-xs text-gray-500 space-y-1">
+                <p className="flex items-center gap-2">
+                  <FaNewspaper className="text-blue-600" /> {article.source}
+                </p>
+                <p className="flex items-center gap-2">
+                  <FaFolderOpen className="text-yellow-600" /> {article.category}
+                </p>
+                <p className="flex items-center gap-2">
+                  <FaCalendarAlt className="text-purple-600" />{' '}
+                  {new Date(article.published_at).toLocaleDateString()}
+                </p>
+              </div>
+
+              <a
+                href={article.url}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 text-blue-600 hover:underline text-sm mt-4"
+              >
+                Read full article <FaExternalLinkAlt size={12} />
+              </a>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
